@@ -3,7 +3,17 @@ import Product from "../models/Product.js";
 // GET ALL PRODUCTS
 export const getProducts = async (req, res) => {
   try {
-    const products = await Product.find();
+    const { category } = req.query;
+
+    let filter = {};
+
+    // ✅ if category is passed → filter
+    if (category) {
+      filter.category = category;
+    }
+
+    const products = await Product.find(filter);
+
     res.json(products);
   } catch (error) {
     res.status(500).json({ message: error.message });

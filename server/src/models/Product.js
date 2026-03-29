@@ -7,6 +7,13 @@ const productSchema = new mongoose.Schema(
     description: { type: String },
     image: { type: String },
     video: { type: String },
+
+    // ✅ NEW FIELD
+    category: { 
+      type: String, 
+      required: true, 
+      enum: ["shoes", "clothes"] // optional but recommended
+    },
   },
   { timestamps: true }
 );
