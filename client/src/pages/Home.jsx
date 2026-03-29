@@ -149,7 +149,7 @@ const Home = () => {
       </div>
 
 {/* 🔥 CLOTHES SECTION */}
-<div style={{ background: "#F9F9F9", minHeight: "100vh"}}>
+<div style={{ background: "#fff", minHeight: "100vh"}}>
   <div
     style={{
       display: "grid",
