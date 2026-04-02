@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import axios from "../api/axios";
 import { useNavigate } from "react-router-dom";
 import gsap from "gsap";
+import ScrollSection from "./ScrollSection"; // ← adjust path as needed
 
 const ITEM_WIDTH = 220;
 const ITEM_GAP = 60;
@@ -21,12 +22,9 @@ const Home = () => {
     const fetchProducts = async () => {
       const shoesRes = await axios.get("/products?category=shoes");
       const clothesRes = await axios.get("/products?category=clothes");
-
-
       setShoes(shoesRes.data);
       setClothes(clothesRes.data);
     };
-
     fetchProducts();
   }, []);
 
@@ -50,28 +48,19 @@ const Home = () => {
 
     function updateScales() {
       if (!containerRef.current || !track) return;
-
       const containerCenter =
         containerRef.current.getBoundingClientRect().left +
         containerRef.current.offsetWidth / 2;
-
       const items = track.querySelectorAll(".scroll-item");
-
       items.forEach((item) => {
         const rect = item.getBoundingClientRect();
         const itemCenter = rect.left + rect.width / 2;
-
         const distance = Math.abs(containerCenter - itemCenter);
         const maxDist = containerRef.current.offsetWidth / 2;
-
         const proximity = Math.max(0, 1 - distance / maxDist);
-
-        const scale = 0.7 + proximity * 0.5;
-        const translateY = -proximity * 30;
-
         gsap.set(item, {
-          scale,
-          y: translateY,
+          scale: 0.7 + proximity * 0.5,
+          y: -proximity * 30,
           opacity: 0.4 + proximity * 0.6,
         });
       });
@@ -148,34 +137,37 @@ const Home = () => {
         </div>
       </div>
 
-{/* 🔥 CLOTHES SECTION */}
-<div style={{ background: "#fff", minHeight: "100vh"}}>
-  <div
-    style={{
-      display: "grid",
-      gridTemplateColumns: "repeat(6, 1fr)",
-      gap: "0px",
-    }}
-  >
-    {clothes.map((p) => (
-      <img
-        key={p._id}
-        src={p.image}
-        alt={p.name}
-        onClick={() => navigate(`/product/${p._id}`)}
-        style={{
-          width: "100%",
-          height: "500px",
-          objectFit: "contain",
-          display: "block",
-          cursor: "pointer",
-          userSelect: "none",
-        }}
-        draggable={false}
-      />
-    ))}
-  </div>
-</div>
+      {/* 🎬 SCROLL ANIMATION SECTION */}
+      <ScrollSection />
+
+      {/* 🔥 CLOTHES SECTION */}
+      <div style={{ background: "#fff", minHeight: "100vh" }}>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(6, 1fr)",
+            gap: "0px",
+          }}
+        >
+          {clothes.map((p) => (
+            <img
+              key={p._id}
+              src={p.image}
+              alt={p.name}
+              onClick={() => navigate(`/product/${p._id}`)}
+              style={{
+                width: "100%",
+                height: "500px",
+                objectFit: "contain",
+                display: "block",
+                cursor: "pointer",
+                userSelect: "none",
+              }}
+              draggable={false}
+            />
+          ))}
+        </div>
+      </div>
     </>
   );
 };
