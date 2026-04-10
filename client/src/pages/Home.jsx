@@ -119,7 +119,7 @@ const Home = () => {
                 }}
               >
                 <img
-                  src={p.image}
+                  src={p.images[0]}  // ✅ fixed
                   alt={p.name}
                   style={{
                     width: "100%",
@@ -152,7 +152,7 @@ const Home = () => {
           {clothes.map((p) => (
             <img
               key={p._id}
-              src={p.image}
+              src={p.images[0]}  // ✅ fixed
               alt={p.name}
               onClick={() => navigate(`/product/${p._id}`)}
               style={{

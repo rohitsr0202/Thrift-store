@@ -5,14 +5,16 @@ const productSchema = new mongoose.Schema(
     name: { type: String, required: true },
     price: { type: Number, required: true },
     description: { type: String },
-    image: { type: String },
+
+    // ✅ CHANGE THIS
+    images: [{ type: String }], // array of image URLs
+
     video: { type: String },
 
-    // ✅ NEW FIELD
     category: { 
       type: String, 
       required: true, 
-      enum: ["shoes", "clothes"] // optional but recommended
+      enum: ["shoes", "clothes"]
     },
   },
   { timestamps: true }
