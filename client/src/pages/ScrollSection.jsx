@@ -203,7 +203,7 @@ useEffect(() => {
     const hScroll = root.querySelector(".ss-horizontal-scroll");
     const marqueeSection = root.querySelector(".ss-marquee");
 
-    const lightColor = "#edf1e8";
+    const lightColor = "#EBEBED";
     const darkColor = "#101010";
 
     // ✅ LENIS SETUP
