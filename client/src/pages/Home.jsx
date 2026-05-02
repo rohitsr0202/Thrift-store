@@ -3,9 +3,10 @@ import axios from "../api/axios";
 import { useNavigate } from "react-router-dom";
 import gsap from "gsap";
 import ScrollSection from "./ScrollSection"; // ← adjust path as needed
+import "./Home.css";
 
-const ITEM_WIDTH = 220;
-const ITEM_GAP = 60;
+const ITEM_WIDTH = 250;
+const ITEM_GAP = 78;
 const STEP = ITEM_WIDTH + ITEM_GAP;
 
 const Home = () => {
@@ -77,65 +78,42 @@ const Home = () => {
   return (
     <>
       {/* 🔥 SHOES SECTION */}
-      <div style={{ background: "#fff", minHeight: "60vh", padding: "60px 0" }}>
-        <h1
-          style={{
-            textAlign: "center",
-            marginBottom: "60px",
-            fontSize: "2rem",
-            letterSpacing: "0.1em",
-          }}
-        >
-          Shoes Collection
-        </h1>
+      <section className="shoes-collection">
+        <div className="shoes-collection__header">
+          <span className="shoes-collection__eyebrow">New season edits</span>
+          <h1 className="shoes-collection__title">Loosely Fit</h1>
+        </div>
 
         <div
           ref={containerRef}
-          style={{ overflow: "hidden", width: "100%", position: "relative" }}
+          className="shoes-collection__viewport"
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
           <div
             ref={trackRef}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: `${ITEM_GAP}px`,
-              width: "max-content",
-              padding: "60px 0",
-            }}
+            className="shoes-collection__track"
           >
             {tripled.map((p, i) => (
               <div
                 key={`${p._id}-${i}`}
                 className="scroll-item"
                 onClick={() => navigate(`/product/${p._id}`)}
-                style={{
-                  width: `${ITEM_WIDTH}px`,
-                  flexShrink: 0,
-                  cursor: "pointer",
-                  transformOrigin: "center bottom",
-                  willChange: "transform",
-                }}
               >
                 <img
-                  src={p.images[0]}  // ✅ fixed
+                  src={p.images[0]} // ✅ fixed
                   alt={p.name}
-                  style={{
-                    width: "100%",
-                    height: "300px",
-                    objectFit: "contain",
-                    display: "block",
-                    pointerEvents: "none",
-                    userSelect: "none",
-                  }}
+                  className="shoes-collection__image"
                   draggable={false}
                 />
+                <div className="shoes-collection__meta">
+                  <span>{p.name}</span>
+                </div>
               </div>
             ))}
           </div>
         </div>
-      </div>
+      </section>
 
       {/* 🎬 SCROLL ANIMATION SECTION */}
       <ScrollSection />
