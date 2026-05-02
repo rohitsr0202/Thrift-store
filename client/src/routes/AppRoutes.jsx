@@ -6,6 +6,7 @@ import Login from "../pages/Login";
 import Register from "../pages/Register";
 import ProductDetail from "../pages/ProductDetail";
 import Checkout from "../pages/Checkout";
+import Cart from "../pages/Cart";
 
 const AppRoutes = () => {
   return (
@@ -27,6 +28,7 @@ const AppRoutes = () => {
         />
 
         <Route path="/product/:id" element={<ProductDetail />} />
+        <Route path="/cart" element={<Cart />} />
         <Route path="/checkout/:id" element={<Checkout />} />
       </Routes>
     </Router>

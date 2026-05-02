@@ -1,3 +1,92 @@
+.home-navbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 64px;
+  padding: 0 clamp(18px, 4vw, 64px);
+  border-bottom: 1px solid rgba(16, 16, 16, 0.08);
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(18px);
+}
+
+.home-navbar button {
+  border: 0;
+  background: transparent;
+  color: #151515;
+  cursor: pointer;
+  font: inherit;
+}
+
+.home-navbar__brand {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 54px;
+  height: 54px;
+  padding: 0;
+  border-radius: 50%;
+  transition: transform 180ms ease, opacity 180ms ease;
+}
+
+.home-navbar__brand img {
+  display: block;
+  width: 152px;
+  height: 152px;
+  object-fit: contain;
+}
+
+.home-navbar__actions {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.home-navbar__icon-button,
+.home-navbar__profile-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 42px;
+  border-radius: 999px;
+  transition: background 180ms ease, transform 180ms ease;
+}
+
+.home-navbar__icon-button {
+  width: 42px;
+}
+
+.home-navbar__profile-button {
+  gap: 8px;
+  padding: 0 14px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.86rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.home-navbar__brand:hover {
+  opacity: 0.82;
+  transform: translateY(-1px);
+}
+
+.home-navbar__icon-button:hover,
+.home-navbar__profile-button:hover {
+  background: rgba(17, 17, 17, 0.06);
+  transform: translateY(-1px);
+}
+
+.home-navbar__brand:focus-visible,
+.home-navbar__icon-button:focus-visible,
+.home-navbar__profile-button:focus-visible {
+  outline: 2px solid #151515;
+  outline-offset: 3px;
+}
+
 .shoes-collection {
   background: #fff;
   min-height: 62vh;
@@ -134,6 +223,15 @@
 }
 
 @media (max-width: 720px) {
+  .home-navbar {
+    min-height: 58px;
+    padding: 0 16px;
+  }
+
+  .home-navbar__profile-button {
+    padding: 0 12px;
+  }
+
   .shoes-collection {
     min-height: 56vh;
     padding: 54px 0 64px;

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "../api/axios";
+import { addToCart } from "../api/cartApi";
 
 const sizeChart = [
   { size: "S", chest: 44, length: 26.5, sleeve: 31.5 },
@@ -45,6 +46,7 @@ const ProductDetail = () => {
   const [selectedImage, setSelectedImage] = useState(0);
   const [selectedSize, setSelectedSize] = useState("S");
   const [quantity, setQuantity] = useState(1);
+  const [addingToCart, setAddingToCart] = useState(false);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -53,6 +55,23 @@ const ProductDetail = () => {
     };
     fetchProduct();
   }, [id]);
+
+  const handleAddToCart = async () => {
+    if (!product || addingToCart) return;
+
+    try {
+      setAddingToCart(true);
+      await addToCart({
+        productId: product._id,
+        size: selectedSize,
+        quantity,
+      });
+      navigate("/cart");
+    } catch (error) {
+      console.error("Unable to add product to cart", error);
+      setAddingToCart(false);
+    }
+  };
 
   if (!product)
     return (
@@ -277,21 +296,23 @@ const ProductDetail = () => {
         {/* Action buttons */}
         <div style={{ display: "flex", gap: 12, marginBottom: 32 }}>
           <button
+            onClick={handleAddToCart}
+            disabled={addingToCart}
             style={{
               flex: 1,
               height: 52,
               border: "1.5px solid #111",
-              background: "transparent",
+              background: addingToCart ? "#f3f3f3" : "transparent",
               borderRadius: 30,
               fontSize: 11,
               fontWeight: 600,
               letterSpacing: "0.1em",
               textTransform: "uppercase",
-              cursor: "pointer",
+              cursor: addingToCart ? "wait" : "pointer",
               color: "#111",
             }}
           >
-            Add to Cart
+            {addingToCart ? "Adding..." : "Add to Cart"}
           </button>
           <button
             onClick={() => navigate(`/checkout/${product._id}`)}

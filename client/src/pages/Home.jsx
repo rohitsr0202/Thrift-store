@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import axios from "../api/axios";
 import { useNavigate } from "react-router-dom";
 import gsap from "gsap";
+import { ShoppingBag, UserRound } from "lucide-react";
+import brandLogo from "../assets/looselyFitIcon.png";
 import ScrollSection from "./ScrollSection"; // ← adjust path as needed
 import "./Home.css";
 
@@ -77,11 +79,38 @@ const Home = () => {
 
   return (
     <>
+      <nav className="home-navbar" aria-label="Primary navigation">
+        <button
+          className="home-navbar__brand"
+          type="button"
+          aria-label="Go to home"
+          onClick={() => navigate("/home")}
+        >
+          <img src={brandLogo} alt="Loosely Fit" />
+        </button>
+
+        <div className="home-navbar__actions">
+          <button
+            className="home-navbar__icon-button"
+            type="button"
+            aria-label="Open cart"
+            onClick={() => navigate("/cart")}
+          >
+            <ShoppingBag size={22} strokeWidth={1.8} />
+          </button>
+
+          <button className="home-navbar__profile-button" type="button" aria-label="Open profile">
+            <UserRound size={20} strokeWidth={1.8} />
+            <span>Profile</span>
+          </button>
+        </div>
+      </nav>
+
       {/* 🔥 SHOES SECTION */}
       <section className="shoes-collection">
         <div className="shoes-collection__header">
-          <span className="shoes-collection__eyebrow">New season edits</span>
-          <h1 className="shoes-collection__title">Loosely Fit</h1>
+          <span className="shoes-collection__eyebrow">Pre-loved edits</span>
+          <h1 className="shoes-collection__title">Thrifted Fits</h1>
         </div>
 
         <div
