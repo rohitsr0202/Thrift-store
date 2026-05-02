@@ -110,7 +110,7 @@ const Home = () => {
       <section className="shoes-collection">
         <div className="shoes-collection__header">
           <span className="shoes-collection__eyebrow">Pre-loved edits</span>
-          <h1 className="shoes-collection__title">Thrifted Fits</h1>
+          <h1 className="shoes-collection__title">Pre-Loved Soles</h1>
         </div>
 
         <div

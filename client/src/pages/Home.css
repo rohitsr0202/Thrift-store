@@ -88,10 +88,16 @@
 }
 
 .shoes-collection {
+  --shoe-cursor: url("../assets/shoes-cursor.png") 14 14, auto;
   background: #fff;
+  cursor: var(--shoe-cursor);
   min-height: 62vh;
   padding: 70px 0 86px;
   overflow: hidden;
+}
+
+.shoes-collection * {
+  cursor: var(--shoe-cursor);
 }
 
 .shoes-collection__header {
@@ -165,7 +171,7 @@
   position: relative;
   width: 250px;
   flex-shrink: 0;
-  cursor: pointer;
+  cursor: var(--shoe-cursor);
   isolation: isolate;
   transform-origin: center bottom;
   transition: filter 220ms ease;
@@ -188,6 +194,7 @@
 }
 
 .scroll-item:hover {
+  cursor: var(--shoe-cursor);
   filter: contrast(1.04) saturate(1.04);
 }
 
