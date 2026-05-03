@@ -164,12 +164,14 @@ const styles = `
 
 // ── Props ──────────────────────────────────────────────────────────────────
 // image        : URL used for marquee + horizontal-slide images
+// middle       : products from /products?category=middle
 // heroText     : text for the hero h1
 // outroText    : text for the outro h1
 // slides       : array of { heading, image } for the horizontal panels
 // ──────────────────────────────────────────────────────────────────────────
 const ScrollSection = ({
   image = "https://www.superkicks.in/cdn/shop/files/BANNERS_6.jpg?v=1772455455",
+  middle = [],
   heroText = "Fragments of thought arranged in sequence become patterns. They unfold step by step, shaping meaning as they move forward.",
   outroText = "Shadows fold into light. Shapes shift across the frame, reminding us that stillness is only temporary.",
   slides = [
@@ -186,6 +188,16 @@ const ScrollSection = ({
   ],
 }) => {
   const rootRef = useRef(null);
+  const marqueeCount = 8;
+  const middleProductImages = middle
+    .map((product) => product.images?.[0])
+    .filter(Boolean);
+  const marqueeImagesToRender = middleProductImages.length
+    ? Array.from(
+        { length: marqueeCount },
+        (_, index) => middleProductImages[index % middleProductImages.length]
+      )
+    : Array.from({ length: marqueeCount }, () => image);
 
 
 useEffect(() => {
@@ -217,7 +229,7 @@ useEffect(() => {
 
     gsap.ticker.lagSmoothing(0);
 
-    // ── Marquee scroll ─────────────────────────
+    // ── ¸ scroll ─────────────────────────
     gsap.to(marqueeImages, {
       scrollTrigger: {
         trigger: marqueeSection,
@@ -374,8 +386,6 @@ useEffect(() => {
 
   return () => ctx.revert(); // ✅ THIS IS THE KEY FIX
 }, []);
-  const marqueeCount = 12;
-
   return (
     <div ref={rootRef} className="scroll-section-root">
       <style>{styles}</style>
@@ -394,12 +404,12 @@ useEffect(() => {
         <section className="ss-marquee">
           <div className="ss-marquee-wrapper">
             <div className="ss-marquee-images">
-              {Array.from({ length: marqueeCount }).map((_, i) => (
+              {marqueeImagesToRender.map((marqueeImage, i) => (
                 <div
                   key={i}
-                  className={`ss-marquee-img${i === 5 ? " pin" : ""}`}
+                  className={`ss-marquee-img${i === 4 ? " pin" : ""}`}
                 >
-                  <img src={image} alt="" />
+                  <img src={marqueeImage} alt="" />
                 </div>
               ))}
             </div>

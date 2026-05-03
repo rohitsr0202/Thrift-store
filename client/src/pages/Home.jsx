@@ -14,6 +14,7 @@ const STEP = ITEM_WIDTH + ITEM_GAP;
 const Home = () => {
   const [shoes, setShoes] = useState([]);
   const [clothes, setClothes] = useState([]);
+  const [middle, setMiddle] = useState([]);
 
   const navigate = useNavigate();
   const trackRef = useRef(null);
@@ -23,10 +24,14 @@ const Home = () => {
   // ✅ FETCH PRODUCTS BY CATEGORY
   useEffect(() => {
     const fetchProducts = async () => {
-      const shoesRes = await axios.get("/products?category=shoes");
-      const clothesRes = await axios.get("/products?category=clothes");
+      const [shoesRes, clothesRes, middleRes] = await Promise.all([
+        axios.get("/products?category=shoes"),
+        axios.get("/products?category=clothes"),
+        axios.get("/products?category=middle"),
+      ]);
       setShoes(shoesRes.data);
       setClothes(clothesRes.data);
+      setMiddle(middleRes.data);
     };
     fetchProducts();
   }, []);
@@ -145,7 +150,7 @@ const Home = () => {
       </section>
 
       {/* 🎬 SCROLL ANIMATION SECTION */}
-      <ScrollSection />
+      <ScrollSection middle={middle} />
 
       {/* 🔥 CLOTHES SECTION */}
       <div style={{ background: "#fff", minHeight: "100vh" }}>
