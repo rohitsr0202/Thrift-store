@@ -145,7 +145,12 @@ const ProductDetail = () => {
               <img
                 src={img}
                 alt={`view ${i + 1}`}
-                style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "contain",
+                  backgroundColor: "#fff",
+                }}
               />
             </button>
           ))}
@@ -157,13 +162,23 @@ const ProductDetail = () => {
             flex: 1,
             borderRadius: 8,
             overflow: "hidden",
-            backgroundColor: "#f5f5f5",
+            backgroundColor: "#fff",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
           }}
         >
           <img
             src={product.images[selectedImage]}
             alt={product.name}
-            style={{ width: "100%", height: "100%", objectFit: "cover" }}
+            style={{
+              width: "72%",
+              height: "72%",
+              maxWidth: 760,
+              maxHeight: 520,
+              objectFit: "contain",
+              display: "block",
+            }}
           />
         </div>
       </div>

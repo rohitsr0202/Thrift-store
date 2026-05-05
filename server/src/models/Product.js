@@ -6,8 +6,7 @@ const productSchema = new mongoose.Schema(
     price: { type: Number, required: true },
     description: { type: String },
 
-    // ✅ CHANGE THIS
-    images: [{ type: String }], // array of image URLs
+    images: [{ type: String }], // image URLs or base64 data URIs
 
     video: { type: String },
 
