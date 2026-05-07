@@ -7,7 +7,8 @@
   "scripts": {
     "dev": "nodemon src/server.js",
     "upload-images": "node uploadImages.js",
-    "reset-products": "node resetProducts.js"
+    "reset-products": "node resetProducts.js",
+    "sync-products": "node syncProducts.js"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
