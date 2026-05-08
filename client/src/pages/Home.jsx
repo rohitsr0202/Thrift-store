@@ -216,7 +216,7 @@ const Home = () => {
             <RotateCcw className="site-footer__service-icon" size={44} strokeWidth={1.4} />
             <h2>Returns</h2>
             <p>
-              Please read our <a href="/policies/returns">Return &amp; Exchange Policy</a> before
+              Please read our <a href="/returns-and-refunds">Return &amp; Exchange Policy</a> before
               purchasing.
             </p>
           </section>
@@ -243,8 +243,8 @@ const Home = () => {
         <div className="site-footer__bottom">
           <nav className="site-footer__links" aria-label="Quick links">
             <h3>Quick links</h3>
-            <a href="/contact">Contact Us</a>
-            <a href="/returns">Returns and Refunds</a>
+            <a href="/contact-us">Contact Us</a>
+            <a href="/returns-and-refunds">Returns and Refunds</a>
             <a href="/policies">Policies</a>
           </nav>
 
