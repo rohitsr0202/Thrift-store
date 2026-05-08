@@ -2,10 +2,34 @@ import React, { useEffect, useRef, useState } from "react";
 import axios from "../api/axios";
 import { useNavigate } from "react-router-dom";
 import gsap from "gsap";
-import { ShoppingBag, UserRound } from "lucide-react";
+import { Mail, Phone, RotateCcw, ShoppingBag, Truck, UserRound } from "lucide-react";
 import brandLogo from "../assets/looselyFitIcon.png";
 import ScrollSection from "./ScrollSection"; // ← adjust path as needed
 import "./Home.css";
+
+const InstagramMark = ({ size = 17 }) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    aria-hidden="true"
+    focusable="false"
+    className="site-footer__brand-icon"
+  >
+    <rect
+      x="4"
+      y="4"
+      width="16"
+      height="16"
+      rx="4.2"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+    />
+    <circle cx="12" cy="12" r="3.4" fill="none" stroke="currentColor" strokeWidth="2" />
+    <circle cx="16.7" cy="7.4" r="1.1" fill="currentColor" />
+  </svg>
+);
 
 const Home = () => {
   const [shoes, setShoes] = useState([]);
@@ -185,6 +209,66 @@ const Home = () => {
           ))}
         </div>
       </section>
+
+      <footer className="site-footer">
+        <div className="site-footer__service-row" aria-label="Store policies and support">
+          <section className="site-footer__service-card">
+            <RotateCcw className="site-footer__service-icon" size={44} strokeWidth={1.4} />
+            <h2>Returns</h2>
+            <p>
+              Please read our <a href="/policies/returns">Return &amp; Exchange Policy</a> before
+              purchasing.
+            </p>
+          </section>
+
+          <section className="site-footer__service-card">
+            <Phone className="site-footer__service-icon" size={44} strokeWidth={1.4} />
+            <h2>Customer Support</h2>
+            <p>
+              Support hours: <strong>12 PM - 6 PM</strong>
+              <strong>Monday to Saturday</strong>
+              <strong>+91 8928567504</strong>
+            </p>
+          </section>
+
+          <section className="site-footer__service-card">
+            <Truck className="site-footer__service-icon" size={48} strokeWidth={1.4} />
+            <h2>Shipping</h2>
+            <p>
+              Please review our <a href="/policies/shipping">Shipping Policy</a>.
+            </p>
+          </section>
+        </div>
+
+        <div className="site-footer__bottom">
+          <nav className="site-footer__links" aria-label="Quick links">
+            <h3>Quick links</h3>
+            <a href="/contact">Contact Us</a>
+            <a href="/returns">Returns and Refunds</a>
+            <a href="/policies">Policies</a>
+          </nav>
+
+          <div className="site-footer__social">
+            <h3>Follow us</h3>
+            <a href="https://www.instagram.com/rohitsr_" target="_blank" rel="noreferrer">
+              <InstagramMark />
+              <span>Instagram</span>
+            </a>
+            <a href="mailto:rohitsinghsr023@gamil.com">
+              <Mail size={17} strokeWidth={2} />
+              <span>Email</span>
+            </a>
+            <a href="tel:+918928567504">
+              <Phone size={17} strokeWidth={2} />
+              <span>Phone</span>
+            </a>
+          </div>
+
+          <div className="site-footer__brand" aria-label="Loosely Fit">
+            <img src={brandLogo} alt="Loosely Fit" />
+          </div>
+        </div>
+      </footer>
     </>
   );
 };
