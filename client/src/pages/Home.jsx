@@ -41,6 +41,7 @@ const Home = () => {
   const trackRef = useRef(null);
   const animRef = useRef(null);
   const containerRef = useRef(null);
+  const shoesTitleRef = useRef(null);
 
   // ✅ FETCH PRODUCTS BY CATEGORY
   useEffect(() => {
@@ -119,6 +120,31 @@ const Home = () => {
 
   const tripled = [...shoes, ...shoes, ...shoes];
 
+  useEffect(() => {
+    if (!shoesTitleRef.current) return;
+
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        ".shoes-collection__reveal",
+        {
+          yPercent: 80,
+          opacity: 0,
+          filter: "blur(10px)",
+        },
+        {
+          yPercent: 0,
+          opacity: 1,
+          filter: "blur(0px)",
+          duration: 1,
+          ease: "power3.out",
+          stagger: 0.08,
+        }
+      );
+    }, shoesTitleRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
     <>
       <nav className="home-navbar" aria-label="Primary navigation">
@@ -150,9 +176,24 @@ const Home = () => {
 
       {/* 🔥 SHOES SECTION */}
       <section className="shoes-collection">
-        <div className="shoes-collection__header">
-          <span className="shoes-collection__eyebrow">Curated</span>
-          <h1 className="shoes-collection__title">Soles in rotation</h1>
+        <div className="shoes-collection__header" ref={shoesTitleRef}>
+          <div className="shoes-collection__meta-bar shoes-collection__reveal">
+            <span>LF Footwear Archive</span>
+            <span>Drop 01</span>
+            <span>Pre-loved rotation</span>
+          </div>
+          <h1 className="shoes-collection__title" aria-label="Soles in rotation">
+            <span className="shoes-collection__title-word shoes-collection__title-word--serif shoes-collection__reveal">
+              Soles
+            </span>
+            <span className="shoes-collection__title-word shoes-collection__title-word--subtle shoes-collection__reveal">
+              in
+            </span>
+            <span className="shoes-collection__title-word shoes-collection__reveal">rotation</span>
+          </h1>
+          <p className="shoes-collection__caption shoes-collection__reveal">
+            Rare pairs, second lives, new walks.
+          </p>
         </div>
 
         <div

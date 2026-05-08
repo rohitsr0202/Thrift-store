@@ -103,11 +103,31 @@ body {
 
 .shoes-collection {
   --shoe-cursor: url("../assets/shoes-cursor.png") 14 14, auto;
+  position: relative;
+  isolation: isolate;
   background: #fff;
   cursor: var(--shoe-cursor);
   min-height: 62vh;
-  padding: 82px 0 86px;
+  padding: clamp(72px, 7vw, 112px) 0 86px;
   overflow: hidden;
+}
+
+.shoes-collection::before {
+  position: absolute;
+  top: clamp(70px, 9vw, 128px);
+  left: 50%;
+  z-index: 0;
+  color: rgba(5, 5, 5, 0.035);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: clamp(6rem, 18vw, 19rem);
+  font-weight: 900;
+  letter-spacing: -0.095em;
+  line-height: 0.8;
+  text-transform: uppercase;
+  white-space: nowrap;
+  content: "ROTATION";
+  transform: translateX(-50%);
+  pointer-events: none;
 }
 
 .shoes-collection * {
@@ -115,12 +135,65 @@ body {
 }
 
 .shoes-collection__header {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(180px, 0.8fr) minmax(420px, 1.5fr) minmax(180px, 0.8fr);
+  align-items: end;
+  gap: clamp(18px, 3vw, 48px);
+  width: min(1480px, 92vw);
+  margin: 0 auto 2px;
   text-align: center;
-  margin-bottom: 14px;
+}
+
+.shoes-collection__header::after {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -22px;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(5, 5, 5, 0.14) 18%,
+    rgba(5, 5, 5, 0.14) 82%,
+    transparent
+  );
+  content: "";
+}
+
+.shoes-collection__meta-bar {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 0.65em;
+  color: rgba(5, 5, 5, 0.52);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: clamp(0.58rem, 0.75vw, 0.72rem);
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  line-height: 1.25;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+.shoes-collection__caption {
+  justify-self: end;
+  max-width: 220px;
+  margin: 0 0 0.65em;
+  color: rgba(5, 5, 5, 0.58);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: clamp(0.78rem, 1vw, 0.96rem);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1.35;
+  text-align: right;
+  text-transform: uppercase;
 }
 
 .shoes-collection__eyebrow {
-  display: inline-flex;
+  display: none;
   align-items: center;
   justify-content: center;
   margin-bottom: 11px;
@@ -133,21 +206,45 @@ body {
 }
 
 .shoes-collection__title {
-  margin: 0;
-  padding: 0 18px;
-  color: #181818;
-  font-family: "Bodoni 72", Didot, "Playfair Display", Georgia, serif;
-  font-size: clamp(2.05rem, 4.6vw, 4.6rem);
-  font-style: italic;
-  font-weight: 500;
-  letter-spacing: 0;
-  line-height: 0.94;
+  display: inline-flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: baseline;
+  gap: 0 0.16em;
+  width: auto;
+  margin: 0 auto;
+  padding: 0;
+  color: #070707;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: clamp(3.1rem, 6.4vw, 7.6rem);
+  font-style: normal;
+  font-weight: 800;
+  letter-spacing: -0.082em;
+  line-height: 0.82;
   text-align: center;
   text-rendering: geometricPrecision;
 }
 
+.shoes-collection__title-word {
+  display: inline-block;
+  will-change: transform, opacity, filter;
+}
+
+.shoes-collection__title-word--serif {
+  font-family: "Bodoni 72", Didot, "Playfair Display", Georgia, serif;
+  font-style: italic;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+}
+
+.shoes-collection__title-word--subtle {
+  color: rgba(5, 5, 5, 0.34);
+  font-weight: 500;
+}
+
 .shoes-collection__viewport {
   position: relative;
+  z-index: 1;
   width: 100%;
   overflow: hidden;
 }
@@ -178,7 +275,7 @@ body {
   align-items: center;
   width: max-content;
   gap: 78px;
-  padding: 68px 0 74px;
+  padding: 92px 0 74px;
 }
 
 .scroll-item {
@@ -428,6 +525,35 @@ body {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
+  .shoes-collection__header {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    gap: 18px;
+  }
+
+  .shoes-collection__meta-bar {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    max-width: 720px;
+    margin-bottom: 0;
+    text-align: center;
+  }
+
+  .shoes-collection__meta-bar span + span::before {
+    margin-right: 8px;
+    color: rgba(5, 5, 5, 0.22);
+    content: "/";
+  }
+
+  .shoes-collection__caption {
+    justify-self: center;
+    max-width: 520px;
+    margin: 0;
+    text-align: center;
+  }
+
   .site-footer__bottom {
     grid-template-columns: minmax(150px, 0.8fr) minmax(150px, 0.8fr) minmax(240px, 1fr);
   }
@@ -482,11 +608,21 @@ body {
 
   .shoes-collection {
     min-height: 56vh;
-    padding: 56px 0 64px;
+    padding: 48px 0 64px;
+  }
+
+  .shoes-collection::before {
+    top: 92px;
+    font-size: clamp(5rem, 28vw, 10rem);
   }
 
   .shoes-collection__header {
+    width: min(100% - 32px, 680px);
     margin-bottom: 8px;
+  }
+
+  .shoes-collection__header::after {
+    bottom: -16px;
   }
 
   .shoes-collection__eyebrow {
@@ -494,9 +630,26 @@ body {
     letter-spacing: 0.2em;
   }
 
+  .shoes-collection__title {
+    font-size: clamp(2.6rem, 13vw, 4.8rem);
+    letter-spacing: -0.045em;
+    line-height: 0.88;
+  }
+
+  .shoes-collection__meta-bar {
+    gap: 7px 10px;
+    font-size: 0.56rem;
+    letter-spacing: 0.16em;
+  }
+
+  .shoes-collection__caption {
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+  }
+
   .shoes-collection__track {
     gap: 44px;
-    padding: 48px 0 58px;
+    padding: 60px 0 58px;
   }
 
   .scroll-item {
