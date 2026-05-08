@@ -15,4 +15,12 @@ export const products = [
     video: "",
     category: "shoes",
   },
+  {
+    name: "Blue Orange Cap",
+    price: 999,
+    description: "Structured cap with blue and orange panel detailing.",
+    imagePrefix: "bluorangcapimg",
+    video: "",
+    category: "cap",
+  },
 ];

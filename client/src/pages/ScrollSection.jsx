@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger.js";
 import Flip from "gsap/Flip.js";
@@ -31,6 +32,17 @@ const styles = `
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+
+  .ss-slide-image-button {
+    width: 75%;
+    height: 75%;
+    padding: 0;
+    border: 0;
+    border-radius: 14px;
+    background: transparent;
+    cursor: pointer;
+    overflow: hidden;
   }
 
   .ss-container {
@@ -134,13 +146,8 @@ const styles = `
     align-items: center;
   }
 
-  .ss-horizontal-slide .ss-col h3,
-  .ss-horizontal-slide .ss-col img {
+  .ss-horizontal-slide .ss-col h3 {
     width: 75%;
-  }
-
-  .ss-horizontal-slide .ss-col img {
-    height: 75%;
   }
 
   @media (max-width: 1000px) {
@@ -158,37 +165,30 @@ const styles = `
     }
     .ss-horizontal-slide .ss-col:nth-child(1) { align-items: flex-start; }
     .ss-horizontal-slide .ss-col h3 { width: 100%; }
-    .ss-horizontal-slide .ss-col img { width: 100%; height: 100%; }
+    .ss-slide-image-button { width: 100%; height: 100%; }
   }
 `;
 
 // ── Props ──────────────────────────────────────────────────────────────────
-// image        : URL used for marquee + horizontal-slide images
 // middle       : products from /products?category=middle
-// heroText     : text for the hero h1
+// cap          : products from /products?category=cap
 // outroText    : text for the outro h1
-// slides       : array of { heading, image } for the horizontal panels
 // ──────────────────────────────────────────────────────────────────────────
 const ScrollSection = ({
-  image = "https://www.superkicks.in/cdn/shop/files/BANNERS_6.jpg?v=1772455455",
   middle = [],
-  heroText = "Fragments of thought arranged in sequence become patterns. They unfold step by step, shaping meaning as they move forward.",
+  cap = [],
   outroText = "Shadows fold into light. Shapes shift across the frame, reminding us that stillness is only temporary.",
-  slides = [
-    {
-      heading:
-        "A landscape in constant transition, where every shape, sound, and shadow refuses to stay still. What seems stable begins to dissolve, and what fades returns again in a new form.",
-      image,
-    },
-    {
-      heading:
-        "The rhythm of motion carries us forward into spaces that feel familiar yet remain undefined. Each shift is subtle, yet together they remind us that nothing we see is ever permanent.",
-      image,
-    },
-  ],
 }) => {
+  const navigate = useNavigate();
   const rootRef = useRef(null);
   const marqueeCount = 8;
+  const slidesToRender = cap.filter((product) => product.images?.[0]);
+  const horizontalPanelCount = slidesToRender.length + 1;
+  const horizontalWrapperWidth = `${horizontalPanelCount * 100}%`;
+  const horizontalTranslateX =
+    horizontalPanelCount > 1
+      ? -(((horizontalPanelCount - 1) / horizontalPanelCount) * 100)
+      : 0;
   const middleProductImages = middle
     .map((product) => product.images?.[0])
     .filter(Boolean);
@@ -197,15 +197,21 @@ const ScrollSection = ({
         { length: marqueeCount },
         (_, index) => middleProductImages[index % middleProductImages.length]
       )
-    : Array.from({ length: marqueeCount }, () => image);
+    : [];
 
 
-useEffect(() => {
-  if (!rootRef.current) return;
+  useEffect(() => {
+    if (!rootRef.current) return;
 
-  gsap.registerPlugin(ScrollTrigger, Flip);
+    gsap.registerPlugin(ScrollTrigger, Flip);
 
-  const ctx = gsap.context(() => {
+    let lenis = null;
+    const updateLenis = (time) => {
+      lenis?.raf(time * 1000);
+    };
+    let removeActiveClone = () => {};
+
+    const ctx = gsap.context(() => {
     const root = rootRef.current;
 
     const container = root.querySelector(".ss-container");
@@ -218,16 +224,14 @@ useEffect(() => {
     const lightColor = "#EBEBED";
     const darkColor = "#101010";
 
-    // ✅ LENIS SETUP
-    const lenis = new Lenis();
+      // ✅ LENIS SETUP
+      lenis = new Lenis();
 
-    lenis.on("scroll", ScrollTrigger.update);
+      lenis.on("scroll", ScrollTrigger.update);
 
-    gsap.ticker.add((time) => {
-      lenis.raf(time * 1000);
-    });
+      gsap.ticker.add(updateLenis);
 
-    gsap.ticker.lagSmoothing(0);
+      gsap.ticker.lagSmoothing(0);
 
     // ── ¸ scroll ─────────────────────────
     gsap.to(marqueeImages, {
@@ -272,7 +276,7 @@ useEffect(() => {
       cloneActive = true;
     };
 
-    const removeClone = () => {
+      const removeClone = () => {
       if (!cloneActive) return;
 
       clone?.remove();
@@ -282,6 +286,7 @@ useEffect(() => {
 
       cloneActive = false;
     };
+      removeActiveClone = removeClone;
 
     // ── Pin section ───────────────────────────
     ScrollTrigger.create({
@@ -366,26 +371,26 @@ useEffect(() => {
           const hp = (p - 0.2) / 0.75;
 
           gsap.set(wrapper, {
-            x: `${-66.67 * hp}%`,
+            x: `${horizontalTranslateX * hp}%`,
           });
 
           if (clone) {
-            const imgX = -((66.67 / 100) * 3 * hp) * 100;
+            const imgX = horizontalTranslateX * horizontalPanelCount * hp;
             gsap.set(clone, { x: `${imgX}%` });
           }
         }
       },
     });
 
-    // ✅ CLEANUP (SAFE)
-    return () => {
-      lenis.destroy();
-      removeClone();
-    };
-  }, rootRef);
+    }, rootRef);
 
-  return () => ctx.revert(); // ✅ THIS IS THE KEY FIX
-}, []);
+    return () => {
+      gsap.ticker.remove(updateLenis);
+      lenis?.destroy();
+      removeActiveClone();
+      ctx.revert();
+    };
+  }, [horizontalPanelCount, horizontalTranslateX]);
   return (
     <div ref={rootRef} className="scroll-section-root">
       <style>{styles}</style>
@@ -418,16 +423,26 @@ useEffect(() => {
 
         {/* Horizontal Scroll */}
         <section className="ss-horizontal-scroll">
-          <div className="ss-horizontal-scroll-wrapper">
+          <div
+            className="ss-horizontal-scroll-wrapper"
+            style={{ width: horizontalWrapperWidth }}
+          >
             <div className="ss-horizontal-slide ss-horizontal-spacer" />
 
-            {slides.map((slide, i) => (
-              <div key={i} className="ss-horizontal-slide">
+            {slidesToRender.map((slide, i) => (
+              <div key={slide._id || i} className="ss-horizontal-slide">
                 <div className="ss-col">
-                  <h3>{slide.heading}</h3>
+                  <h3>{slide.description}</h3>
                 </div>
                 <div className="ss-col">
-                  <img src={slide.image} alt="" />
+                  <button
+                    className="ss-slide-image-button"
+                    type="button"
+                    aria-label={`Open ${slide.name || "product"} detail`}
+                    onClick={() => slide._id && navigate(`/product/${slide._id}`)}
+                  >
+                    <img src={slide.images[0]} alt={slide.name || ""} />
+                  </button>
                 </div>
               </div>
             ))}

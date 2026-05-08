@@ -13,7 +13,7 @@ const productSchema = new mongoose.Schema(
     category: { 
       type: String, 
       required: true, 
-      enum: ["shoes", "clothes", "middle"]
+      enum: ["shoes", "clothes", "middle", "cap"]
     },
   },
   { timestamps: true }
