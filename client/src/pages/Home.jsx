@@ -151,8 +151,8 @@ const Home = () => {
       {/* 🔥 SHOES SECTION */}
       <section className="shoes-collection">
         <div className="shoes-collection__header">
-          <span className="shoes-collection__eyebrow">Pre-loved edits</span>
-          <h1 className="shoes-collection__title">Pre-Loved Soles</h1>
+          <span className="shoes-collection__eyebrow">Curated</span>
+          <h1 className="shoes-collection__title">Soles in rotation</h1>
         </div>
 
         <div

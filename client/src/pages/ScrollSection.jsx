@@ -35,6 +35,8 @@ const styles = `
   }
 
   .ss-slide-image-button {
+    position: relative;
+    display: block;
     width: 75%;
     height: 75%;
     padding: 0;
@@ -43,6 +45,66 @@ const styles = `
     background: transparent;
     cursor: pointer;
     overflow: hidden;
+  }
+
+  .ss-slide-image-button::after {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.08) 0%,
+      rgba(0, 0, 0, 0.34) 48%,
+      rgba(0, 0, 0, 0.18) 100%
+    );
+    content: "";
+    pointer-events: none;
+  }
+
+  .ss-slide-image-button img {
+    display: block;
+    transition: transform 420ms ease, filter 420ms ease;
+  }
+
+  .ss-slide-image-button:hover img {
+    transform: scale(1.025);
+    filter: contrast(1.04);
+  }
+
+  .ss-slide-label {
+    position: absolute;
+    bottom: 20%;
+    left: 50%;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    color: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 900;
+    line-height: 1;
+    text-align: center;
+    text-transform: uppercase;
+    transform: translateX(-50%);
+    pointer-events: none;
+  }
+
+  .ss-slide-label__title {
+    font-size: clamp(1.45rem, 3vw, 2.75rem);
+    letter-spacing: 0.01em;
+  }
+
+  .ss-slide-label__action {
+    font-size: clamp(0.78rem, 1vw, 1rem);
+    letter-spacing: 0;
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-underline-offset: 4px;
+    transition: text-decoration-color 180ms ease;
+  }
+
+  .ss-slide-image-button:hover .ss-slide-label__action {
+    text-decoration-color: currentColor;
   }
 
   .ss-container {
@@ -247,6 +309,18 @@ const styles = `
       max-height: 58svh;
       aspect-ratio: 4 / 5;
       height: auto;
+    }
+
+    .ss-slide-label {
+      gap: 8px;
+    }
+
+    .ss-slide-label__title {
+      font-size: clamp(1.55rem, 8vw, 2.6rem);
+    }
+
+    .ss-slide-label__action {
+      font-size: clamp(0.78rem, 3.5vw, 0.98rem);
     }
   }
 
@@ -539,6 +613,10 @@ const ScrollSection = ({
                     onClick={() => slide._id && navigate(`/product/${slide._id}`)}
                   >
                     <img src={slide.images[0]} alt={slide.name || ""} />
+                    <span className="ss-slide-label" aria-hidden="true">
+                      <span className="ss-slide-label__title">Caps</span>
+                      <span className="ss-slide-label__action">Shop now</span>
+                    </span>
                   </button>
                 </div>
               </div>
