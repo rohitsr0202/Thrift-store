@@ -141,6 +141,208 @@ const styles = `
   .ss-outro {
     background-color: var(--dark);
     color: var(--light);
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .ss-outro::before {
+    position: absolute;
+    inset: 0;
+    z-index: -3;
+    background:
+      linear-gradient(rgba(235, 235, 237, 0.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(235, 235, 237, 0.035) 1px, transparent 1px);
+    background-size: 72px 72px;
+    mask-image: radial-gradient(circle at center, #000 0 44%, transparent 78%);
+    content: "";
+  }
+
+  .ss-outro::after {
+    position: absolute;
+    inset: 18% 10%;
+    z-index: -2;
+    border: 1px solid rgba(235, 235, 237, 0.14);
+    content: "";
+    transform: skewY(-4deg);
+  }
+
+  .ss-outro__marquee {
+    position: absolute;
+    left: 50%;
+    z-index: -2;
+    width: 120vw;
+    overflow: hidden;
+    color: rgba(235, 235, 237, 0.08);
+    font-family: "PP Neue Montreal", Arial, sans-serif;
+    font-size: clamp(4.2rem, 11vw, 13rem);
+    font-weight: 800;
+    letter-spacing: -0.075em;
+    line-height: 0.82;
+    text-transform: uppercase;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+
+  .ss-outro__marquee--top {
+    top: 9%;
+    transform: translateX(-50%) rotate(-5deg);
+  }
+
+  .ss-outro__marquee--bottom {
+    bottom: 6%;
+    transform: translateX(-50%) rotate(4deg);
+  }
+
+  .ss-outro__marquee-track {
+    display: inline-flex;
+    gap: 0.18em;
+    will-change: transform;
+  }
+
+  .ss-outro__media {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  .ss-outro__frame {
+    position: absolute;
+    width: clamp(110px, 13vw, 220px);
+    aspect-ratio: 3 / 4;
+    border: 1px solid rgba(235, 235, 237, 0.18);
+    border-radius: 10px;
+    opacity: 0.46;
+    overflow: hidden;
+    transform: rotate(var(--tilt));
+    will-change: transform, opacity;
+  }
+
+  .ss-outro__frame::after {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(16, 16, 16, 0.16), rgba(16, 16, 16, 0.52));
+    content: "";
+  }
+
+  .ss-outro__frame img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(1) contrast(1.16);
+    transform: scale(1.08);
+  }
+
+  .ss-outro__frame:nth-child(1) {
+    top: 17%;
+    left: 7%;
+    --tilt: -10deg;
+  }
+
+  .ss-outro__frame:nth-child(2) {
+    right: 8%;
+    top: 15%;
+    --tilt: 8deg;
+  }
+
+  .ss-outro__frame:nth-child(3) {
+    left: 15%;
+    bottom: 12%;
+    --tilt: 7deg;
+  }
+
+  .ss-outro__frame:nth-child(4) {
+    right: 18%;
+    bottom: 10%;
+    --tilt: -8deg;
+  }
+
+  .ss-outro__center {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    place-items: center;
+    min-height: min(640px, 78svh);
+  }
+
+  .ss-outro__kicker {
+    position: absolute;
+    top: calc(50% - clamp(8rem, 13vw, 13rem));
+    left: 50%;
+    color: rgba(235, 235, 237, 0.48);
+    font-size: clamp(0.68rem, 1vw, 0.92rem);
+    font-weight: 800;
+    letter-spacing: 0.42em;
+    text-transform: uppercase;
+    transform: translateX(-50%);
+    white-space: nowrap;
+  }
+
+  .ss-outro__line {
+    display: inline-flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: baseline;
+    gap: 0 0.28em;
+    width: min(1120px, 92vw);
+    margin: 0 auto;
+    color: rgba(235, 235, 237, 0.94);
+    font-family: "PP Neue Montreal", Arial, sans-serif;
+    font-size: clamp(2.4rem, 6vw, 6.8rem);
+    font-weight: 500;
+    letter-spacing: -0.055em;
+    line-height: 0.92;
+    text-align: center;
+  }
+
+  .ss-outro .ss-outro__line {
+    width: min(1120px, 92vw);
+  }
+
+  .ss-outro__brand {
+    font-family: "Bodoni 72", Didot, "Playfair Display", Georgia, serif;
+    font-style: italic;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+  }
+
+  .ss-outro__dash {
+    color: rgba(235, 235, 237, 0.36);
+    font-weight: 300;
+  }
+
+  .ss-outro__word {
+    display: inline-block;
+    will-change: transform, opacity, filter;
+  }
+
+  .ss-outro__subtle {
+    color: rgba(235, 235, 237, 0.72);
+  }
+
+  .ss-outro__spark {
+    position: absolute;
+    left: 50%;
+    bottom: calc(50% - clamp(8.8rem, 14vw, 14rem));
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: rgba(235, 235, 237, 0.54);
+    font-size: clamp(0.68rem, 0.9vw, 0.8rem);
+    font-weight: 800;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    transform: translateX(-50%);
+    white-space: nowrap;
+  }
+
+  .ss-outro__spark::before,
+  .ss-outro__spark::after {
+    width: clamp(34px, 6vw, 96px);
+    height: 1px;
+    background: rgba(235, 235, 237, 0.26);
+    content: "";
   }
 
   .ss-marquee {
@@ -264,6 +466,59 @@ const styles = `
       padding: 32px 18px;
     }
 
+    .ss-outro::after {
+      inset: 18% 6%;
+    }
+
+    .ss-outro__marquee {
+      font-size: clamp(4.4rem, 22vw, 9rem);
+    }
+
+    .ss-outro__frame {
+      width: clamp(82px, 25vw, 140px);
+      opacity: 0.32;
+    }
+
+    .ss-outro__frame:nth-child(1) {
+      top: 14%;
+      left: -6%;
+    }
+
+    .ss-outro__frame:nth-child(2) {
+      right: -7%;
+      top: 16%;
+    }
+
+    .ss-outro__frame:nth-child(3) {
+      left: 3%;
+      bottom: 8%;
+    }
+
+    .ss-outro__frame:nth-child(4) {
+      right: 4%;
+      bottom: 7%;
+    }
+
+    .ss-outro__center {
+      min-height: 66svh;
+    }
+
+    .ss-outro__kicker {
+      top: calc(50% - 9rem);
+      letter-spacing: 0.28em;
+    }
+
+    .ss-outro__line {
+      font-size: clamp(2.15rem, 13vw, 4.4rem);
+      letter-spacing: -0.045em;
+      line-height: 0.96;
+    }
+
+    .ss-outro__spark {
+      bottom: calc(50% - 9rem);
+      letter-spacing: 0.16em;
+    }
+
     .ss-marquee {
       height: 38svh;
       min-height: 250px;
@@ -348,7 +603,7 @@ const styles = `
 const ScrollSection = ({
   middle = [],
   cap = [],
-  outroText = "Shadows fold into light. Shapes shift across the frame, reminding us that stillness is only temporary.",
+  outroText = "Loosely Fit - made for the ones who never fit in.",
 }) => {
   const navigate = useNavigate();
   const rootRef = useRef(null);
@@ -369,6 +624,10 @@ const ScrollSection = ({
         (_, index) => middleProductImages[index % middleProductImages.length]
       )
     : [];
+  const outroImagesToRender = [...cap, ...middle]
+    .map((product) => product.images?.[0])
+    .filter(Boolean)
+    .slice(0, 4);
 
 
   useEffect(() => {
@@ -391,6 +650,12 @@ const ScrollSection = ({
     const wrapper = root.querySelector(".ss-horizontal-scroll-wrapper");
     const hScroll = root.querySelector(".ss-horizontal-scroll");
     const marqueeSection = root.querySelector(".ss-marquee");
+    const outroWords = gsap.utils.toArray(".ss-outro__word", root);
+    const outroFrames = gsap.utils.toArray(".ss-outro__frame", root);
+    const outroTopMarquee = root.querySelector(".ss-outro__marquee--top .ss-outro__marquee-track");
+    const outroBottomMarquee = root.querySelector(
+      ".ss-outro__marquee--bottom .ss-outro__marquee-track"
+    );
 
     const lightColor = "#EBEBED";
     const darkColor = "#101010";
@@ -553,6 +818,93 @@ const ScrollSection = ({
       },
     });
 
+    gsap.fromTo(
+      outroWords,
+      {
+        yPercent: 80,
+        opacity: 0,
+        filter: "blur(12px)",
+      },
+      {
+        yPercent: 0,
+        opacity: 1,
+        filter: "blur(0px)",
+        duration: 1.15,
+        ease: "power3.out",
+        stagger: 0.055,
+        scrollTrigger: {
+          trigger: ".ss-outro",
+          start: "top 70%",
+          once: true,
+        },
+      }
+    );
+
+    if (outroTopMarquee && outroBottomMarquee) {
+      gsap.to(outroTopMarquee, {
+        xPercent: -18,
+        ease: "none",
+        scrollTrigger: {
+          trigger: ".ss-outro",
+          start: "top bottom",
+          end: "bottom top",
+          scrub: true,
+        },
+      });
+
+      gsap.fromTo(
+        outroBottomMarquee,
+        { xPercent: -18 },
+        {
+          xPercent: 0,
+          ease: "none",
+          scrollTrigger: {
+            trigger: ".ss-outro",
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true,
+          },
+        }
+      );
+    }
+
+    if (outroFrames.length) {
+      gsap.fromTo(
+        outroFrames,
+        {
+          y: 80,
+          opacity: 0,
+          rotate: (index) => (index % 2 ? 14 : -14),
+          scale: 0.86,
+        },
+        {
+          y: 0,
+          opacity: 0.46,
+          rotate: 0,
+          scale: 1,
+          duration: 1.2,
+          ease: "power3.out",
+          stagger: 0.08,
+          scrollTrigger: {
+            trigger: ".ss-outro",
+            start: "top 74%",
+            once: true,
+          },
+        }
+      );
+
+      gsap.to(outroFrames, {
+        y: (index) => (index % 2 ? -70 : 70),
+        ease: "none",
+        scrollTrigger: {
+          trigger: ".ss-outro",
+          start: "top bottom",
+          end: "bottom top",
+          scrub: true,
+        },
+      });
+    }
+
     }, rootRef);
 
     return () => {
@@ -626,7 +978,49 @@ const ScrollSection = ({
 
         {/* Outro */}
         <section className="ss-outro">
-          <h1>{outroText}</h1>
+          <div className="ss-outro__marquee ss-outro__marquee--top" aria-hidden="true">
+            <div className="ss-outro__marquee-track">
+              <span>never fit in&nbsp;</span>
+              <span>never fit in&nbsp;</span>
+              <span>never fit in&nbsp;</span>
+            </div>
+          </div>
+
+          <div className="ss-outro__marquee ss-outro__marquee--bottom" aria-hidden="true">
+            <div className="ss-outro__marquee-track">
+              <span>made to stand out&nbsp;</span>
+              <span>made to stand out&nbsp;</span>
+              <span>made to stand out&nbsp;</span>
+            </div>
+          </div>
+
+          {outroImagesToRender.length > 0 && (
+            <div className="ss-outro__media" aria-hidden="true">
+              {outroImagesToRender.map((image, index) => (
+                <div className="ss-outro__frame" key={`${image}-${index}`}>
+                  <img src={image} alt="" />
+                </div>
+              ))}
+            </div>
+          )}
+
+          <div className="ss-outro__center">
+            <span className="ss-outro__kicker">fashion for the unfitted</span>
+            <h1 className="ss-outro__line" aria-label={outroText}>
+              <span className="ss-outro__word ss-outro__brand">Loosely</span>
+              <span className="ss-outro__word ss-outro__brand">Fit</span>
+              <span className="ss-outro__word ss-outro__dash">-</span>
+              <span className="ss-outro__word ss-outro__subtle">made</span>
+              <span className="ss-outro__word ss-outro__subtle">for</span>
+              <span className="ss-outro__word ss-outro__subtle">the</span>
+              <span className="ss-outro__word">ones</span>
+              <span className="ss-outro__word">who</span>
+              <span className="ss-outro__word">never</span>
+              <span className="ss-outro__word">fit</span>
+              <span className="ss-outro__word">in.</span>
+            </h1>
+            <span className="ss-outro__spark">drop identity</span>
+          </div>
         </section>
       </div>
     </div>
