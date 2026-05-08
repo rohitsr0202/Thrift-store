@@ -7,10 +7,6 @@ import brandLogo from "../assets/looselyFitIcon.png";
 import ScrollSection from "./ScrollSection"; // ← adjust path as needed
 import "./Home.css";
 
-const ITEM_WIDTH = 250;
-const ITEM_GAP = 78;
-const STEP = ITEM_WIDTH + ITEM_GAP;
-
 const Home = () => {
   const [shoes, setShoes] = useState([]);
   const [clothes, setClothes] = useState([]);
@@ -44,18 +40,26 @@ const Home = () => {
     if (shoes.length === 0) return;
 
     const track = trackRef.current;
-    const totalWidth = shoes.length * STEP;
+    if (!track) return;
 
-    animRef.current = gsap.to(track, {
-      x: `-=${totalWidth}`,
-      duration: shoes.length * 5,
-      ease: "none",
-      repeat: -1,
-      modifiers: {
-        x: gsap.utils.unitize((x) => parseFloat(x) % totalWidth),
-      },
-      onUpdate: updateScales,
-    });
+    const buildAnimation = () => {
+      animRef.current?.kill();
+      gsap.set(track, { x: 0 });
+
+      const totalWidth = track.scrollWidth / 3;
+      if (!totalWidth) return;
+
+      animRef.current = gsap.to(track, {
+        x: `-=${totalWidth}`,
+        duration: shoes.length * 5,
+        ease: "none",
+        repeat: -1,
+        modifiers: {
+          x: gsap.utils.unitize((x) => parseFloat(x) % totalWidth),
+        },
+        onUpdate: updateScales,
+      });
+    };
 
     function updateScales() {
       if (!containerRef.current || !track) return;
@@ -77,7 +81,13 @@ const Home = () => {
       });
     }
 
-    return () => animRef.current?.kill();
+    buildAnimation();
+    window.addEventListener("resize", buildAnimation);
+
+    return () => {
+      window.removeEventListener("resize", buildAnimation);
+      animRef.current?.kill();
+    };
   }, [shoes]);
 
   const handleMouseEnter = () => animRef.current?.pause();
@@ -156,33 +166,25 @@ const Home = () => {
       <ScrollSection middle={middle} cap={cap} />
 
       {/* 🔥 CLOTHES SECTION */}
-      <div style={{ background: "#fff", minHeight: "100vh" }}>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(6, 1fr)",
-            gap: "0px",
-          }}
-        >
+      <section className="clothes-collection" aria-label="Clothes collection">
+        <div className="clothes-collection__grid">
           {clothes.map((p) => (
-            <img
+            <button
               key={p._id}
-              src={p.images[0]}  // ✅ fixed
-              alt={p.name}
+              className="clothes-collection__item"
+              type="button"
+              aria-label={`Open ${p.name}`}
               onClick={() => navigate(`/product/${p._id}`)}
-              style={{
-                width: "100%",
-                height: "500px",
-                objectFit: "contain",
-                display: "block",
-                cursor: "pointer",
-                userSelect: "none",
-              }}
-              draggable={false}
-            />
+            >
+              <img
+                src={p.images[0]}
+                alt={p.name}
+                draggable={false}
+              />
+            </button>
           ))}
         </div>
-      </div>
+      </section>
     </>
   );
 };

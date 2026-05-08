@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "../api/axios";
 import { addToCart } from "../api/cartApi";
+import "./ProductDetail.css";
 
 const sizeChart = [
   { size: "S", chest: 44, length: 26.5, sleeve: 31.5 },
@@ -13,28 +14,16 @@ const sizeChart = [
 const Section = ({ title, children }) => {
   const [open, setOpen] = useState(true);
   return (
-    <div style={{ borderTop: "1px solid #e5e5e5", padding: "16px 0" }}>
+    <div className="product-section">
       <button
         onClick={() => setOpen(!open)}
-        style={{
-          width: "100%",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          background: "none",
-          border: "none",
-          cursor: "pointer",
-          padding: 0,
-          fontSize: 13,
-          fontWeight: 500,
-          letterSpacing: "0.04em",
-          color: "#111",
-        }}
+        className="product-section__toggle"
+        type="button"
       >
         <span>{title}</span>
-        <span style={{ fontSize: 18, lineHeight: 1 }}>{open ? "−" : "+"}</span>
+        <span className="product-section__icon">{open ? "−" : "+"}</span>
       </button>
-      {open && <div style={{ marginTop: 12 }}>{children}</div>}
+      {open && <div className="product-section__content">{children}</div>}
     </div>
   );
 };
@@ -75,183 +64,68 @@ const ProductDetail = () => {
 
   if (!product)
     return (
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          height: "100vh",
-          fontSize: 16,
-          color: "#888",
-        }}
-      >
+      <div className="product-loading">
         Loading...
       </div>
     );
 
   return (
-    <div
-      style={{
-        display: "flex",
-        minHeight: "100vh",
-        backgroundColor: "#fff",
-        fontFamily:
-          "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
-      }}
-    >
+    <main className="product-page">
+      <div className="product-detail">
       {/* ── LEFT: Gallery ── */}
-      <div
-        style={{
-          width: "58%",
-          display: "flex",
-          gap: 12,
-          padding: 40,
-          position: "sticky",
-          top: 0,
-          height: "100vh",
-          boxSizing: "border-box",
-        }}
-      >
+      <div className="product-gallery">
         {/* Thumbnail strip */}
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: 8,
-            width: 72,
-            flexShrink: 0,
-          }}
-        >
+        <div className="product-thumbs">
           {product.images.map((img, i) => (
             <button
               key={i}
               onClick={() => setSelectedImage(i)}
-              style={{
-                width: 72,
-                height: 88,
-                borderRadius: 4,
-                overflow: "hidden",
-                border: selectedImage === i
-                  ? "1.5px solid #000"
-                  : "1px solid #e0e0e0",
-                opacity: selectedImage === i ? 1 : 0.5,
-                cursor: "pointer",
-                padding: 0,
-                background: "none",
-                flexShrink: 0,
-                transition: "all 0.2s",
-              }}
+              className={`product-thumb${selectedImage === i ? " is-active" : ""}`}
+              type="button"
+              aria-label={`Show product image ${i + 1}`}
             >
               <img
                 src={img}
                 alt={`view ${i + 1}`}
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "contain",
-                  backgroundColor: "#fff",
-                }}
               />
             </button>
           ))}
         </div>
 
         {/* Main image */}
-        <div
-          style={{
-            flex: 1,
-            borderRadius: 8,
-            overflow: "hidden",
-            backgroundColor: "#fff",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
+        <div className="product-main-image">
           <img
             src={product.images[selectedImage]}
             alt={product.name}
-            style={{
-              width: "72%",
-              height: "72%",
-              maxWidth: 760,
-              maxHeight: 520,
-              objectFit: "contain",
-              display: "block",
-            }}
           />
         </div>
       </div>
 
       {/* ── RIGHT: Info ── */}
-      <div
-        style={{
-          width: "42%",
-          padding: "40px 40px 40px 40px",
-          overflowY: "auto",
-          height: "100vh",
-          boxSizing: "border-box",
-          borderLeft: "1px solid #f0f0f0",
-        }}
-      >
+      <div className="product-info">
         {/* Title */}
-        <h1
-          style={{
-            fontSize: 24,
-            fontWeight: 700,
-            textTransform: "uppercase",
-            letterSpacing: "0.02em",
-            lineHeight: 1.3,
-            marginBottom: 16,
-            color: "#111",
-          }}
-        >
+        <h1 className="product-title">
           {product.name}
         </h1>
 
         {/* Price */}
-        <p
-          style={{
-            fontSize: 18,
-            fontWeight: 500,
-            marginBottom: 32,
-            color: "#111",
-          }}
-        >
+        <p className="product-price">
           ₹{product.price.toLocaleString("en-IN")}.00
         </p>
 
         {/* Size label */}
-        <p
-          style={{
-            fontSize: 13,
-            color: "#888",
-            marginBottom: 12,
-          }}
-        >
+        <p className="product-label">
           Select Size
         </p>
 
         {/* Size buttons */}
-        <div style={{ display: "flex", gap: 10, marginBottom: 24 }}>
+        <div className="product-size-options">
           {["S", "M", "L", "XL"].map((s) => (
             <button
               key={s}
               onClick={() => setSelectedSize(s)}
-              style={{
-                width: 48,
-                height: 48,
-                borderRadius: "50%",
-                border: selectedSize === s
-                  ? "1.5px solid #111"
-                  : "1px solid #ccc",
-                background: "transparent",
-                fontSize: 13,
-                fontWeight: selectedSize === s ? 600 : 400,
-                cursor: "pointer",
-                color: "#111",
-                transition: "all 0.15s",
-              }}
+              className={`product-size${selectedSize === s ? " is-active" : ""}`}
+              type="button"
             >
               {s}
             </button>
@@ -259,91 +133,40 @@ const ProductDetail = () => {
         </div>
 
         {/* Quantity */}
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            border: "1px solid #e0e0e0",
-            borderRadius: 4,
-            marginBottom: 16,
-          }}
-        >
+        <div className="product-quantity">
           <button
             onClick={() => setQuantity(Math.max(1, quantity - 1))}
-            style={{
-              width: 48,
-              height: 48,
-              background: "none",
-              border: "none",
-              fontSize: 20,
-              cursor: "pointer",
-              color: "#555",
-            }}
+            type="button"
+            aria-label="Decrease quantity"
           >
             −
           </button>
-          <span
-            style={{
-              flex: 1,
-              textAlign: "center",
-              fontSize: 14,
-              fontWeight: 500,
-            }}
-          >
+          <span>
             {quantity}
           </span>
           <button
             onClick={() => setQuantity(quantity + 1)}
-            style={{
-              width: 48,
-              height: 48,
-              background: "none",
-              border: "none",
-              fontSize: 20,
-              cursor: "pointer",
-              color: "#555",
-            }}
+            type="button"
+            aria-label="Increase quantity"
           >
             +
           </button>
         </div>
 
         {/* Action buttons */}
-        <div style={{ display: "flex", gap: 12, marginBottom: 32 }}>
+        <div className="product-actions">
           <button
             onClick={handleAddToCart}
             disabled={addingToCart}
-            style={{
-              flex: 1,
-              height: 52,
-              border: "1.5px solid #111",
-              background: addingToCart ? "#f3f3f3" : "transparent",
-              borderRadius: 30,
-              fontSize: 11,
-              fontWeight: 600,
-              letterSpacing: "0.1em",
-              textTransform: "uppercase",
-              cursor: addingToCart ? "wait" : "pointer",
-              color: "#111",
-            }}
+            className="product-action"
+            type="button"
           >
             {addingToCart ? "Adding..." : "Add to Cart"}
           </button>
           <button
             onClick={() => navigate(`/checkout/${product._id}`)}
-            style={{
-              flex: 1,
-              height: 52,
-              border: "none",
-              background: "#111",
-              color: "#fff",
-              borderRadius: 30,
-              fontSize: 11,
-              fontWeight: 600,
-              letterSpacing: "0.1em",
-              textTransform: "uppercase",
-              cursor: "pointer",
-            }}
+            className="product-action product-action--solid"
+            type="button"
           >
             Buy It Now
           </button>
@@ -351,15 +174,7 @@ const ProductDetail = () => {
 
         {/* Features */}
         <Section title="Features">
-          <ul
-            style={{
-              paddingLeft: 18,
-              margin: 0,
-              fontSize: 13,
-              color: "#555",
-              lineHeight: 2,
-            }}
-          >
+          <ul className="product-list">
             {[
               "Button-down shirt with original applique patchwork design",
               "Collared neckline",
@@ -375,15 +190,7 @@ const ProductDetail = () => {
 
         {/* Wash care */}
         <Section title="Composition and wash care">
-          <ul
-            style={{
-              paddingLeft: 18,
-              margin: 0,
-              fontSize: 13,
-              color: "#555",
-              lineHeight: 2,
-            }}
-          >
+          <ul className="product-list">
             <li>100% linen</li>
             <li>Machine wash cold on gentle cycle</li>
             <li>Use mild detergent</li>
@@ -394,28 +201,12 @@ const ProductDetail = () => {
 
         {/* Size chart */}
         <Section title="Size chart">
-          <table
-            style={{
-              width: "100%",
-              borderCollapse: "collapse",
-              fontSize: 13,
-            }}
-          >
+          <div className="product-table-wrap">
+          <table className="product-size-chart">
             <thead>
-              <tr style={{ borderBottom: "1px solid #e0e0e0" }}>
+              <tr>
                 {["Size", "Chest", "Length", "Sleeve"].map((h) => (
-                  <th
-                    key={h}
-                    style={{
-                      textAlign: "left",
-                      padding: "8px 12px",
-                      fontSize: 11,
-                      fontWeight: 500,
-                      color: "#888",
-                      textTransform: "uppercase",
-                      letterSpacing: "0.05em",
-                    }}
-                  >
+                  <th key={h}>
                     {h}
                   </th>
                 ))}
@@ -423,49 +214,40 @@ const ProductDetail = () => {
             </thead>
             <tbody>
               {sizeChart.map((row) => (
-                <tr
-                  key={row.size}
-                  style={{ borderBottom: "1px solid #f0f0f0" }}
-                >
-                  <td style={{ padding: "8px 12px", color: "#111" }}>
+                <tr key={row.size}>
+                  <td>
                     {row.size}
                   </td>
-                  <td style={{ padding: "8px 12px", color: "#555" }}>
+                  <td>
                     {row.chest}
                   </td>
-                  <td style={{ padding: "8px 12px", color: "#555" }}>
+                  <td>
                     {row.length}
                   </td>
-                  <td style={{ padding: "8px 12px", color: "#555" }}>
+                  <td>
                     {row.sleeve}
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
+          </div>
         </Section>
 
         {/* Notes */}
-        <div
-          style={{
-            marginTop: 16,
-            fontSize: 12,
-            color: "#888",
-            lineHeight: 1.8,
-            paddingBottom: 40,
-          }}
-        >
+        <div className="product-notes">
           <p>
             Ready sizes ship immediately. Unavailable sizes will be made to
             order in 10–15 days.
           </p>
-          <p style={{ marginTop: 6 }}>
+          <p>
             M2M orders: Our team will contact you for measurements. Delivery:
             10–15 days.
           </p>
         </div>
       </div>
-    </div>
+      </div>
+    </main>
   );
 };
 

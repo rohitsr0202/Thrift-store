@@ -38,7 +38,7 @@ useEffect(() => {
   if (user) {
     navigate("/home");
   }
-}, []);
+}, [navigate]);
 
   return (
     <div style={{ padding: "50px" }}>

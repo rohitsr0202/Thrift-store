@@ -62,6 +62,14 @@ const styles = `
     text-align: center;
   }
 
+  .ss-hero {
+    min-height: 520px;
+  }
+
+  .ss-hero img {
+    object-position: center;
+  }
+
   .ss-hero h1,
   .ss-outro h1 {
     width: 75%;
@@ -166,6 +174,95 @@ const styles = `
     .ss-horizontal-slide .ss-col:nth-child(1) { align-items: flex-start; }
     .ss-horizontal-slide .ss-col h3 { width: 100%; }
     .ss-slide-image-button { width: 100%; height: 100%; }
+  }
+
+  @media (max-width: 720px) {
+    .scroll-section-root h1 {
+      font-size: clamp(2rem, 11vw, 3.1rem);
+      line-height: 1.05;
+    }
+
+    .scroll-section-root h3 {
+      font-size: clamp(1.15rem, 5.8vw, 1.65rem);
+      line-height: 1.18;
+    }
+
+    .ss-hero {
+      height: 72svh;
+      min-height: 460px;
+    }
+
+    .ss-hero img {
+      object-position: center top;
+    }
+
+    .ss-outro {
+      min-height: 72svh;
+      height: auto;
+      padding: 32px 18px;
+    }
+
+    .ss-marquee {
+      height: 38svh;
+      min-height: 250px;
+    }
+
+    .ss-marquee-wrapper {
+      width: 430%;
+    }
+
+    .ss-marquee-images {
+      gap: 0.65rem;
+    }
+
+    .ss-horizontal-scroll,
+    .ss-horizontal-scroll-wrapper {
+      height: 100svh;
+      min-height: 620px;
+    }
+
+    .ss-horizontal-slide {
+      padding: 24px 18px 32px;
+      gap: 18px;
+    }
+
+    .ss-horizontal-slide .ss-col:nth-child(1),
+    .ss-horizontal-slide .ss-col:nth-child(2) {
+      flex: 1;
+      width: 100%;
+    }
+
+    .ss-horizontal-slide .ss-col:nth-child(1) {
+      align-items: flex-start;
+      justify-content: flex-end;
+      min-height: 180px;
+    }
+
+    .ss-horizontal-slide .ss-col:nth-child(2) {
+      align-items: flex-end;
+      min-height: 320px;
+    }
+
+    .ss-slide-image-button {
+      max-height: 58svh;
+      aspect-ratio: 4 / 5;
+      height: auto;
+    }
+  }
+
+  @media (max-width: 420px) {
+    .ss-hero {
+      min-height: 420px;
+    }
+
+    .ss-horizontal-scroll,
+    .ss-horizontal-scroll-wrapper {
+      min-height: 580px;
+    }
+
+    .ss-horizontal-slide .ss-col:nth-child(2) {
+      min-height: 280px;
+    }
   }
 `;
 

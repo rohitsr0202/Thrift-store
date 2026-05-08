@@ -13,6 +13,19 @@
   backdrop-filter: blur(18px);
 }
 
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  overflow-x: hidden;
+}
+
+* {
+  box-sizing: border-box;
+}
+
 .home-navbar button {
   border: 0;
   background: transparent;
@@ -229,6 +242,60 @@
   transform: translateY(0);
 }
 
+.clothes-collection {
+  min-height: 100vh;
+  background: #fff;
+}
+
+.clothes-collection__grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
+.clothes-collection__item {
+  display: block;
+  min-width: 0;
+  height: clamp(260px, 34vw, 500px);
+  padding: 0;
+  border: 0;
+  background: #fff;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.clothes-collection__item img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  user-select: none;
+  -webkit-user-drag: none;
+  transition: transform 220ms ease;
+}
+
+.clothes-collection__item:hover img {
+  transform: scale(1.025);
+}
+
+.clothes-collection__item:focus-visible {
+  position: relative;
+  z-index: 1;
+  outline: 2px solid #151515;
+  outline-offset: -2px;
+}
+
+@media (max-width: 1180px) {
+  .clothes-collection__grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .clothes-collection__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
 @media (max-width: 720px) {
   .home-navbar {
     min-height: 58px;
@@ -237,6 +304,16 @@
 
   .home-navbar__profile-button {
     padding: 0 12px;
+  }
+
+  .home-navbar__brand {
+    width: 48px;
+    height: 48px;
+  }
+
+  .home-navbar__brand img {
+    width: 128px;
+    height: 128px;
   }
 
   .shoes-collection {
@@ -254,15 +331,46 @@
   }
 
   .shoes-collection__track {
-    gap: 78px;
+    gap: 44px;
     padding: 48px 0 58px;
   }
 
   .scroll-item {
-    width: 250px;
+    width: min(62vw, 220px);
   }
 
   .shoes-collection__image {
     height: 230px;
+  }
+
+  .clothes-collection__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .clothes-collection__item {
+    height: clamp(220px, 72vw, 360px);
+  }
+}
+
+@media (max-width: 420px) {
+  .home-navbar {
+    padding: 0 12px;
+  }
+
+  .home-navbar__actions {
+    gap: 6px;
+  }
+
+  .home-navbar__profile-button span {
+    display: none;
+  }
+
+  .home-navbar__profile-button {
+    width: 42px;
+    padding: 0;
+  }
+
+  .shoes-collection__image {
+    height: 205px;
   }
 }
