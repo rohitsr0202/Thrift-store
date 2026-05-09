@@ -4,12 +4,105 @@ import axios from "../api/axios";
 import { addToCart } from "../api/cartApi";
 import "./ProductDetail.css";
 
-const sizeChart = [
-  { size: "S", chest: 44, length: 26.5, sleeve: 31.5 },
-  { size: "M", chest: 46, length: 27, sleeve: 32 },
-  { size: "L", chest: 48, length: 27.5, sleeve: 32.5 },
-  { size: "XL", chest: 50, length: 28, sleeve: 32.5 },
-];
+const productDetailsByCategory = {
+  clothes: {
+    sizes: ["S", "M", "L", "XL"],
+    features: [
+      "Button-down shirt with original applique patchwork design",
+      "Collared neckline",
+      "Front button closure",
+      "Relaxed fit",
+      "Raglan sleeves with cuffs",
+      "Straight hem",
+    ],
+    care: [
+      "100% linen",
+      "Machine wash cold on gentle cycle",
+      "Use mild detergent",
+      "Do not bleach",
+      "Do not tumble dry",
+    ],
+    sizeChart: {
+      headers: ["Size", "Chest", "Length", "Sleeve"],
+      rows: [
+        { size: "S", chest: 44, length: 26.5, sleeve: 31.5 },
+        { size: "M", chest: 46, length: 27, sleeve: 32 },
+        { size: "L", chest: 48, length: 27.5, sleeve: 32.5 },
+        { size: "XL", chest: 50, length: 28, sleeve: 32.5 },
+      ],
+    },
+    notes: [
+      "Ready sizes ship immediately. Unavailable sizes will be made to order in 10-15 days.",
+      "M2M orders: Our team will contact you for measurements. Delivery: 10-15 days.",
+    ],
+  },
+  shoes: {
+    sizes: ["UK 6", "UK 7", "UK 8", "UK 9", "UK 10"],
+    features: [
+      "Curated pre-loved sneaker pair",
+      "Low-top profile",
+      "Cushioned footbed",
+      "Durable rubber outsole",
+      "Cleaned and inspected before dispatch",
+    ],
+    care: [
+      "Wipe gently with a soft dry cloth",
+      "Use sneaker cleaner only when needed",
+      "Air dry away from direct sunlight",
+      "Do not machine wash",
+      "Store with shoe trees or paper stuffing",
+    ],
+    sizeChart: {
+      headers: ["UK", "EU", "US", "CM"],
+      rows: [
+        { uk: "6", eu: "40", us: "7", cm: "25" },
+        { uk: "7", eu: "41", us: "8", cm: "26" },
+        { uk: "8", eu: "42", us: "9", cm: "27" },
+        { uk: "9", eu: "43", us: "10", cm: "28" },
+        { uk: "10", eu: "44", us: "11", cm: "29" },
+      ],
+    },
+    notes: [
+      "Pre-loved footwear may show minor signs of previous use.",
+      "Pairs are dispatched after a final quality check.",
+    ],
+  },
+  cap: {
+    sizes: ["OS"],
+    features: [
+      "Structured six-panel cap",
+      "Curved brim",
+      "Adjustable back strap",
+      "Contrast panel detailing",
+      "Everyday streetwear fit",
+    ],
+    care: [
+      "Spot clean only",
+      "Use a damp cloth with mild soap",
+      "Do not bleach",
+      "Do not tumble dry",
+      "Air dry in shade",
+    ],
+    sizeChart: {
+      headers: ["Size", "Head Circumference", "Fit"],
+      rows: [
+        { size: "OS", headCircumference: "54-60 cm", fit: "Adjustable" },
+      ],
+    },
+    notes: [
+      "One size fits most with an adjustable strap.",
+      "Caps ship ready from available stock.",
+    ],
+  },
+};
+
+const getProductDetails = (category) =>
+  productDetailsByCategory[category] || productDetailsByCategory.clothes;
+
+const formatHeaderKey = (header) =>
+  header
+    .toLowerCase()
+    .replace(/[^a-z0-9]+(.)/g, (_, character) => character.toUpperCase());
 
 const Section = ({ title, children }) => {
   const [open, setOpen] = useState(true);
@@ -45,6 +138,12 @@ const ProductDetail = () => {
     fetchProduct();
   }, [id]);
 
+  const detailData = product ? getProductDetails(product.category) : null;
+  const activeSize =
+    detailData && detailData.sizes.includes(selectedSize)
+      ? selectedSize
+      : detailData?.sizes[0];
+
   const handleAddToCart = async () => {
     if (!product || addingToCart) return;
 
@@ -52,7 +151,7 @@ const ProductDetail = () => {
       setAddingToCart(true);
       await addToCart({
         productId: product._id,
-        size: selectedSize,
+        size: activeSize,
         quantity,
       });
       navigate("/cart");
@@ -120,11 +219,11 @@ const ProductDetail = () => {
 
         {/* Size buttons */}
         <div className="product-size-options">
-          {["S", "M", "L", "XL"].map((s) => (
+          {detailData.sizes.map((s) => (
             <button
               key={s}
               onClick={() => setSelectedSize(s)}
-              className={`product-size${selectedSize === s ? " is-active" : ""}`}
+              className={`product-size${activeSize === s ? " is-active" : ""}`}
               type="button"
             >
               {s}
@@ -175,14 +274,7 @@ const ProductDetail = () => {
         {/* Features */}
         <Section title="Features">
           <ul className="product-list">
-            {[
-              "Button-down shirt with original applique patchwork design",
-              "Collared neckline",
-              "Front button closure",
-              "Relaxed fit",
-              "Raglan sleeves with cuffs",
-              "Straight hem",
-            ].map((f, i) => (
+            {detailData.features.map((f, i) => (
               <li key={i}>{f}</li>
             ))}
           </ul>
@@ -191,11 +283,9 @@ const ProductDetail = () => {
         {/* Wash care */}
         <Section title="Composition and wash care">
           <ul className="product-list">
-            <li>100% linen</li>
-            <li>Machine wash cold on gentle cycle</li>
-            <li>Use mild detergent</li>
-            <li>Do not bleach</li>
-            <li>Do not tumble dry</li>
+            {detailData.care.map((item, i) => (
+              <li key={i}>{item}</li>
+            ))}
           </ul>
         </Section>
 
@@ -205,7 +295,7 @@ const ProductDetail = () => {
           <table className="product-size-chart">
             <thead>
               <tr>
-                {["Size", "Chest", "Length", "Sleeve"].map((h) => (
+                {detailData.sizeChart.headers.map((h) => (
                   <th key={h}>
                     {h}
                   </th>
@@ -213,20 +303,13 @@ const ProductDetail = () => {
               </tr>
             </thead>
             <tbody>
-              {sizeChart.map((row) => (
-                <tr key={row.size}>
-                  <td>
-                    {row.size}
-                  </td>
-                  <td>
-                    {row.chest}
-                  </td>
-                  <td>
-                    {row.length}
-                  </td>
-                  <td>
-                    {row.sleeve}
-                  </td>
+              {detailData.sizeChart.rows.map((row) => (
+                <tr key={row.size || row.uk}>
+                  {detailData.sizeChart.headers.map((header) => (
+                    <td key={header}>
+                      {row[formatHeaderKey(header)]}
+                    </td>
+                  ))}
                 </tr>
               ))}
             </tbody>
@@ -236,14 +319,9 @@ const ProductDetail = () => {
 
         {/* Notes */}
         <div className="product-notes">
-          <p>
-            Ready sizes ship immediately. Unavailable sizes will be made to
-            order in 10–15 days.
-          </p>
-          <p>
-            M2M orders: Our team will contact you for measurements. Delivery:
-            10–15 days.
-          </p>
+          {detailData.notes.map((note, i) => (
+            <p key={i}>{note}</p>
+          ))}
         </div>
       </div>
       </div>
