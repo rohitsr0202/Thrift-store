@@ -76,7 +76,7 @@ This repository is a full-stack e-commerce website with separate frontend and ba
 - `server/src/models/User.js` - user schema with `name`, `email`, `password`.
 - `server/src/models/Product.js` - product schema with `name`, `price`, `description`, `images`, `video`, and `category`.
 - `server/src/models/Cart.js` - cart item schema with `product`, `size`, and `quantity`.
-- `server/src/models/Order.js` - likely order schema (not inspected in detail).
+- `server/src/models/Order.js` - currently empty placeholder file.
 
 ### Controllers
 - `server/src/controllers/authController.js` - register/login logic with bcrypt and JWT.
@@ -88,7 +88,7 @@ This repository is a full-stack e-commerce website with separate frontend and ba
 - `server/src/routes/authRoutes.js` - `/api/auth/register`, `/api/auth/login`.
 - `server/src/routes/productRoutes.js` - `/api/products`, `/api/products/:id`.
 - `server/src/routes/cartRoutes.js` - `/api/cart`, `/api/cart/:id`.
-- `server/src/routes/paymentRoutes.js` - file likely exists but may not be wired or implemented.
+- `server/src/routes/paymentRoutes.js` - empty placeholder file.
 
 ### Middleware
 - `server/src/middleware/authMiddleware.js` - currently empty.
@@ -101,6 +101,8 @@ This repository is a full-stack e-commerce website with separate frontend and ba
 
 - `client/src/api/productApi.js` and `client/src/api/paymentApi.js` are empty.
 - `client/src/context/AuthContext.jsx` and `client/src/hooks/useAuth.js` are empty.
+- `server/src/routes/paymentRoutes.js` is empty.
+- `server/src/models/Order.js` is empty.
 - `server/src/middleware/authMiddleware.js` and `server/src/middleware/errorMiddleware.js` are empty.
 - `server/src/controllers/paymentController.js` is empty.
 - Cart data is stored globally in MongoDB and not tied to a specific user.
