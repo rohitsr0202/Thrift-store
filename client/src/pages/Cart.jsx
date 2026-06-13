@@ -57,6 +57,18 @@ const Cart = () => {
     }
   };
 
+  const handleCheckout = () => {
+    const user = localStorage.getItem("userInfo");
+    const checkoutPath = "/checkout/cart";
+
+    if (!user) {
+      navigate("/login", { state: { from: checkoutPath } });
+      return;
+    }
+
+    navigate(checkoutPath);
+  };
+
   return (
     <main className="cart-page">
       <nav className="home-navbar" aria-label="Primary navigation">
@@ -160,7 +172,7 @@ const Cart = () => {
             <div className="cart-total">
               <h2>Total: {formatPrice(total)}</h2>
               <p>Tax included. Shipping calculated at checkout.</p>
-              <button type="button" onClick={() => navigate("/checkout/cart")}>
+              <button type="button" onClick={handleCheckout}>
                 Checkout
               </button>
             </div>

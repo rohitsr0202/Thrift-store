@@ -4,6 +4,9 @@ import { useNavigate } from "react-router-dom";
 import gsap from "gsap";
 import { Mail, Phone, RotateCcw, ShoppingBag, Truck, UserRound } from "lucide-react";
 import brandLogo from "../assets/looselyFitIcon.png";
+import campaignHero from "../assets/Images/bluoranggroupimg1.webp";
+import campaignCap from "../assets/Images/bluorangcapimg1.webp";
+import campaignCar from "../assets/Images/bluorangcarimg1.webp";
 import ScrollSection from "./ScrollSection"; // ← adjust path as needed
 import "./Home.css";
 
@@ -42,6 +45,7 @@ const Home = () => {
   const animRef = useRef(null);
   const containerRef = useRef(null);
   const shoesTitleRef = useRef(null);
+  const campaignRef = useRef(null);
 
   // ✅ FETCH PRODUCTS BY CATEGORY
   useEffect(() => {
@@ -145,6 +149,115 @@ const Home = () => {
     return () => ctx.revert();
   }, []);
 
+  useEffect(() => {
+    const section = campaignRef.current;
+    if (!section) return undefined;
+
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (reduceMotion) {
+      gsap.set(section.querySelectorAll(".home-campaign-intro__reveal"), {
+        clearProps: "all",
+        opacity: 1,
+        filter: "blur(0px)",
+      });
+      return undefined;
+    }
+
+    const heroImage = section.querySelector(".home-campaign-intro__image");
+    const foreground = section.querySelector(".home-campaign-intro__foreground");
+    const title = section.querySelector(".home-campaign-intro__title");
+    const kicker = section.querySelector(".home-campaign-intro__kicker");
+    const frames = section.querySelectorAll(".home-campaign-intro__frame");
+
+    const ctx = gsap.context(() => {
+      gsap.set(".home-campaign-intro__media", {
+        clipPath: "inset(10% 10% 10% 10%)",
+        opacity: 0,
+        filter: "blur(16px)",
+      });
+      gsap.set(".home-campaign-intro__image", { scale: 1.16, opacity: 0 });
+      gsap.set(".home-campaign-intro__title span", { yPercent: 110, opacity: 0 });
+      gsap.set(".home-campaign-intro__reveal", { y: 26, opacity: 0, filter: "blur(10px)" });
+      gsap.set(".home-campaign-intro__frame", { y: 36, opacity: 0, rotate: 0 });
+
+      const intro = gsap.timeline({ defaults: { ease: "power3.out" } });
+      intro
+        .to(".home-campaign-intro__media", {
+          clipPath: "inset(0% 0% 0% 0%)",
+          opacity: 1,
+          filter: "blur(0px)",
+          duration: 1.45,
+        })
+        .to(".home-campaign-intro__image", { scale: 1.02, opacity: 1, duration: 1.7 }, "-=1.18")
+        .to(".home-campaign-intro__title span", { yPercent: 0, opacity: 1, duration: 1.08, stagger: 0.11 }, "-=0.78")
+        .to(".home-campaign-intro__reveal", { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.82, stagger: 0.08 }, "-=0.78")
+        .to(
+          ".home-campaign-intro__frame",
+          { y: 0, opacity: 1, rotate: (i) => (i === 0 ? -5 : 6), duration: 0.95, stagger: 0.12 },
+          "-=0.72"
+        );
+
+      gsap.to(heroImage, {
+        scale: 1.09,
+        duration: 26,
+        ease: "sine.inOut",
+        repeat: -1,
+        yoyo: true,
+      });
+
+      gsap.to(frames, {
+        y: (i) => (i === 0 ? -14 : 16),
+        duration: 5.8,
+        ease: "sine.inOut",
+        repeat: -1,
+        yoyo: true,
+        stagger: 0.35,
+      });
+    }, section);
+
+    const heroX = gsap.quickTo(heroImage, "x", { duration: 0.9, ease: "power3.out" });
+    const heroY = gsap.quickTo(heroImage, "y", { duration: 0.9, ease: "power3.out" });
+    const foregroundX = gsap.quickTo(foreground, "x", { duration: 0.7, ease: "power3.out" });
+    const foregroundY = gsap.quickTo(foreground, "y", { duration: 0.7, ease: "power3.out" });
+    const titleX = gsap.quickTo(title, "x", { duration: 0.85, ease: "power3.out" });
+    const titleY = gsap.quickTo(title, "y", { duration: 0.85, ease: "power3.out" });
+    const kickerX = gsap.quickTo(kicker, "x", { duration: 0.6, ease: "power3.out" });
+
+    const handleMove = (event) => {
+      const rect = section.getBoundingClientRect();
+      const x = (event.clientX - rect.left) / rect.width - 0.5;
+      const y = (event.clientY - rect.top) / rect.height - 0.5;
+
+      heroX(x * 14);
+      heroY(y * 10);
+      foregroundX(x * -18);
+      foregroundY(y * -14);
+      titleX(x * 8);
+      titleY(y * 6);
+      kickerX(x * 12);
+    };
+
+    const handleLeave = () => {
+      heroX(0);
+      heroY(0);
+      foregroundX(0);
+      foregroundY(0);
+      titleX(0);
+      titleY(0);
+      kickerX(0);
+    };
+
+    section.addEventListener("mousemove", handleMove);
+    section.addEventListener("mouseleave", handleLeave);
+
+    return () => {
+      section.removeEventListener("mousemove", handleMove);
+      section.removeEventListener("mouseleave", handleLeave);
+      ctx.revert();
+    };
+  }, []);
+
   return (
     <>
       <nav className="home-navbar" aria-label="Primary navigation">
@@ -173,6 +286,39 @@ const Home = () => {
           </button>
         </div>
       </nav>
+
+      <section className="campaign-intro home-campaign-intro" ref={campaignRef} aria-label="Bluorang campaign">
+        <div className="home-campaign-intro__media" aria-hidden="true">
+          <img className="home-campaign-intro__image" src={campaignHero} alt="" draggable={false} />
+        </div>
+
+        <div className="home-campaign-intro__foreground" aria-hidden="true">
+          <figure className="home-campaign-intro__frame home-campaign-intro__frame--cap">
+            <img src={campaignCap} alt="" draggable={false} />
+          </figure>
+          <figure className="home-campaign-intro__frame home-campaign-intro__frame--car">
+            <img src={campaignCar} alt="" draggable={false} />
+          </figure>
+        </div>
+
+        <div className="home-campaign-intro__content">
+          {/* <p className="home-campaign-intro__kicker home-campaign-intro__reveal">Loosely Fit presents</p> */}
+          <h1 className="home-campaign-intro__title" aria-label="Bluorang campaign">
+            <span>Loosely</span>
+            <span>Fit</span>
+          </h1>
+          <p className="home-campaign-intro__copy home-campaign-intro__reveal">
+            Winter pieces, rare rotations, and editorial objects staged for the first entrance.
+          </p>
+          <button
+            className="home-campaign-intro__button home-campaign-intro__reveal"
+            type="button"
+            onClick={() => document.querySelector(".shoes-collection")?.scrollIntoView({ behavior: "smooth" })}
+          >
+            Enter the edit
+          </button>
+        </div>
+      </section>
 
       {/* 🔥 SHOES SECTION */}
       <section className="shoes-collection">
